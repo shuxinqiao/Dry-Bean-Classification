@@ -1,16 +1,15 @@
-from msilib import type_valid
-from matplotlib.pyplot import axis
 import numpy as np
 import pandas as pd
+import utils
 import SoftmaxRegression
 import SupportVectorMachine
 from NeuralNetwork import Network, Layer, FCLayer, ActivationLayer, tanh, tanh_prime, mse, mse_prime
 
 
+#-------------------------
+# Process Data
+#-------------------------
 def processData():
-    #-------------------------
-    # Process Data
-    #-------------------------
     # Read data
     panda_excel = pd.read_excel('Dry_Bean_Dataset.xlsx', engine='openpyxl')
     dataset = np.array(panda_excel)
@@ -45,7 +44,7 @@ def processData():
     print("---- Data Process ----")
     print("RAW data shape:", dataset.shape)
     print("Feature data shape:", data_features.shape)
-    print("type data shape:", data_type.shape)
+    print("Type data shape:", data_type.shape)
 
 
     # split data
@@ -62,24 +61,31 @@ def processData():
     return X_train, t_train, X_val, t_val, X_test, t_test
 
 
+#-------------------------
+# Softmax Regression
+#-------------------------
 def softmax(X_train, t_train, X_val, t_val, X_test, t_test):
-    #-------------------------
-    # Softmax Regression
-    #-------------------------
-    print('\n---- Softmax Regression ----')
 
-    epoch_best, acc_best,  W_best, train_losses, valid_accs = SoftmaxRegression.train(X_train, t_train, X_val, t_val)
+    print('\n---- Softmax Regression ----\n')
 
-    acc_test = SoftmaxRegression.predict(X_test, W_best, t_test)
+    softmax_epoch_best, softmax_acc_best,  softmax_W_best, softmax_train_losses, softmax_valid_accs =\
+         SoftmaxRegression.train(X_train, t_train, X_val, t_val)
 
-    print('\nTest accuracy: {}'.format(acc_test))
+    utils.plot(softmax_train_losses, "Softmax-TrainLoss", "Softmax - Train Loss", "Epoch", "Loss")
+    utils.plot(softmax_valid_accs, "Softmax-ValAcc", "Softmax - Validatino Accuracy", "Epoch", "Accuracy")
+
+    softmax_acc_test = SoftmaxRegression.predict(X_test, softmax_W_best, t_test)
+
+    print('\nTest accuracy: {}'.format(softmax_acc_test))
+
+    return 0
 
 
-
-def ANN(X_train, t_train, X_val, t_val):
-    #-------------------------
-    # Neural Network
-    #-------------------------
+#-------------------------
+# Neural Network
+#-------------------------
+def ANN(X_train, t_train, X_val, t_val, X_test, t_test):
+    
     print('\n---- Neural Network ----')
 
     X_train = X_train.reshape(X_train.shape[0],1,16)
@@ -102,22 +108,40 @@ def ANN(X_train, t_train, X_val, t_val):
     print(t_test[:10].flatten())
     
 
+#-------------------------
+# Support Vector Machine
+#-------------------------
+def SVM(X_train, t_train, X_val, t_val, X_test, t_test):
+    print('\n---- Support Vector Machine ----\n')
 
-def SVM(X_train, t_train, X_val, t_val):
-    #-------------------------
-    # Support Vector Machine
-    #-------------------------
-    print('\n---- Support Vector Machine ----')
-    SupportVectorMachine.train(X_train, t_train, X_val, t_val)
+    SVM_epoch_best, SVM_acc_best, SVM_W_best, SVM_train_losses, SVM_valid_accs = \
+        SupportVectorMachine.train(X_train, t_train, X_val, t_val)
+
+    utils.plot(SVM_train_losses, "SVM-TrainLoss", "SVM - Train Loss", "Epoch", "Loss")
+    utils.plot(SVM_valid_accs, "SVM-ValAcc", "SVM - Validatino Accuracy", "Epoch", "Accuracy")
+
+    SVM_acc_test = SupportVectorMachine.predict(X_test, SVM_W_best, t_test)
+
+    print('\nTest accuracy: {}'.format(SVM_acc_test))
 
     return 0
 
 
+#-------------------------
+# Main Function
+#-------------------------
 def main():
+    # process data
+
     X_train, t_train, X_val, t_val, X_test, t_test = processData()
+
+    # train models
     #softmax(X_train, t_train, X_val, t_val, X_test, t_test)
-    #ANN(X_train, t_train, X_val, t_val)
-    SVM(X_train, t_train, X_val, t_val)
+
+    SVM(X_train, t_train, X_val, t_val, X_test, t_test)
+
+    #ANN(X_train, t_train, X_val, t_val, X_test, t_test)
+    
 
 
 

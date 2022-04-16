@@ -8,7 +8,7 @@ MaxEpoch = 100        # Maximum epoch
 
 
 # prediction function
-def predict(X, W, t=None):
+def predict(X, W, t):
     # X_new: Nsample x (d+1)
     # W: (d+1) x K
 
@@ -114,11 +114,11 @@ def train(X_train, y_train, X_val, t_val):
         
         print('acc  = {acc}'.format(acc=acc))
 
+        
         # find best epoch and return
         if acc > acc_best:
             acc_best = acc
             epoch_best = epoch
             W_best = np.append(w,b.reshape(1,N_class),axis = 0)
-
-    
-    return epoch_best, acc_best,  W_best, train_losses, valid_accs
+        
+    return epoch_best, acc_best, W_best, train_losses, valid_accs
