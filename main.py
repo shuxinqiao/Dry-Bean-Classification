@@ -61,6 +61,16 @@ def processData():
 
 
 #-------------------------
+# Majority Guess
+#-------------------------
+def majorGuess(t_test):
+    print('\n---- Majority Guess ----\n')
+
+    # Dermason - Class 7 - order 6
+    print('Test Accuracy: {}'.format(np.mean(t_test == 6)))
+
+
+#-------------------------
 # Softmax Regression
 #-------------------------
 def softmax(X_train, t_train, X_val, t_val, X_test, t_test):
@@ -116,7 +126,7 @@ def NN(X_train, t_train, X_val, t_val, X_test, t_test):
     history = NeuralNetwork.train(X_train, t_train, X_test, t_test)
 
     NN_train_losses = history.history['loss']
-    NN_valid_accs = history.history['val_acc']
+    NN_valid_accs = history.history['val_accuracy']
 
     utils.plot(NN_train_losses, "NN-TrainLoss", "NN - Train Loss", "Epoch", "Loss")
     utils.plot(NN_valid_accs, "NN-ValAcc", "NN - Validatino Accuracy", "Epoch", "Accuracy")
@@ -132,6 +142,9 @@ def main():
     # process data
 
     X_train, t_train, X_val, t_val, X_test, t_test = processData()
+
+    # Majority Guess
+    majorGuess(t_test)
 
     # train models
     softmax(X_train, t_train, X_val, t_val, X_test, t_test)

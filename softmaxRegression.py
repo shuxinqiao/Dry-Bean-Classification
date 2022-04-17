@@ -119,6 +119,6 @@ def train(X_train, y_train, X_val, t_val):
         if acc > acc_best:
             acc_best = acc
             epoch_best = epoch
-            W_best = np.append(w,b.reshape(1,N_class),axis = 0)
+            W_best = w#np.append(w,b.reshape(1,N_class),axis = 0)
         
     return epoch_best, acc_best, W_best, train_losses, valid_accs

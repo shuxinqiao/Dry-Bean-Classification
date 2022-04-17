@@ -16,7 +16,7 @@ def train(X_train, t_train, X_test, t_test):
     model.summary()
 
     model.compile(optimizer='sgd', loss='categorical_crossentropy', metrics='accuracy')
-    history = model.fit(X_train, t_train, batch_size=100, epochs=50, validation_split=0.1)
+    history = model.fit(X_train, t_train, batch_size=100, epochs=100, validation_split=0.1)
     loss, accuracy = model.evaluate(X_test, t_test)
 
     print('loss: {}'.format(loss))

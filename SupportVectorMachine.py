@@ -1,10 +1,10 @@
 import numpy as np
 
 N_class = 7
-reg_strength = 0.1      # regulization loss weight
+reg_strength = 0.1      # Regularization loss weight
 delta = 1       # right classify score
 
-alpha = 0.1      # learning rate
+alpha = 0.025      # learning rate
 MaxEpoch = 100        # Maximum epoch
 
 def train(X_train, t_train, X_val, t_val):
