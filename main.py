@@ -3,7 +3,7 @@ import pandas as pd
 import utils
 import SoftmaxRegression
 import SupportVectorMachine
-from NeuralNetwork import Network, Layer, FCLayer, ActivationLayer, tanh, tanh_prime, mse, mse_prime
+import NeuralNetwork
 
 
 #-------------------------
@@ -36,12 +36,11 @@ def processData():
     data_features = (data_features - data_features.mean(axis=0)) / data_features.std(axis=0)
 
     # adding all one bias feature
-    data_features = np.concatenate(
-            (data_features, np.ones((data_features.shape[0], 1))), axis=1)
+    data_features = np.concatenate((data_features, np.ones((data_features.shape[0], 1))), axis=1)
 
 
 
-    print("---- Data Process ----")
+    print("---- Data Process ----\n")
     print("RAW data shape:", dataset.shape)
     print("Feature data shape:", data_features.shape)
     print("Type data shape:", data_type.shape)
@@ -82,33 +81,6 @@ def softmax(X_train, t_train, X_val, t_val, X_test, t_test):
 
 
 #-------------------------
-# Neural Network
-#-------------------------
-def ANN(X_train, t_train, X_val, t_val, X_test, t_test):
-    
-    print('\n---- Neural Network ----')
-
-    X_train = X_train.reshape(X_train.shape[0],1,16)
-    t_train = t_train.flatten()
-    print(X_train.shape)
-
-    net = Network()
-    net.add(FCLayer(16, 100))               
-    net.add(ActivationLayer(tanh, tanh_prime))
-    net.add(FCLayer(100, 50))                   
-    net.add(ActivationLayer(tanh, tanh_prime))
-    net.add(FCLayer(50, 7))                    
-    net.add(ActivationLayer(tanh, tanh_prime))
-
-    net.use(mse, mse_prime)
-    net.fit(X_train, t_train, epochs=35, learning_rate=0.3)
-
-    out = net.predict(X_test[:10])
-    print(out)
-    print(t_test[:10].flatten())
-    
-
-#-------------------------
 # Support Vector Machine
 #-------------------------
 def SVM(X_train, t_train, X_val, t_val, X_test, t_test):
@@ -128,6 +100,32 @@ def SVM(X_train, t_train, X_val, t_val, X_test, t_test):
 
 
 #-------------------------
+# Neural Network
+#-------------------------
+def NN(X_train, t_train, X_val, t_val, X_test, t_test):
+    print('\n---- Neural Network ----\n')
+    
+
+    X_train = np.concatenate((X_train, X_val), axis=0)
+    t_train = np.concatenate((t_train, t_val), axis=0)
+    
+    t_train = utils.onehot(t_train)
+    t_test = utils.onehot(t_test)
+
+
+    history = NeuralNetwork.train(X_train, t_train, X_test, t_test)
+
+    NN_train_losses = history.history['loss']
+    NN_valid_accs = history.history['val_acc']
+
+    utils.plot(NN_train_losses, "NN-TrainLoss", "NN - Train Loss", "Epoch", "Loss")
+    utils.plot(NN_valid_accs, "NN-ValAcc", "NN - Validatino Accuracy", "Epoch", "Accuracy")
+
+
+
+
+    
+#-------------------------
 # Main Function
 #-------------------------
 def main():
@@ -136,11 +134,11 @@ def main():
     X_train, t_train, X_val, t_val, X_test, t_test = processData()
 
     # train models
-    #softmax(X_train, t_train, X_val, t_val, X_test, t_test)
+    softmax(X_train, t_train, X_val, t_val, X_test, t_test)
 
     SVM(X_train, t_train, X_val, t_val, X_test, t_test)
 
-    #ANN(X_train, t_train, X_val, t_val, X_test, t_test)
+    NN(X_train, t_train, X_val, t_val, X_test, t_test)
     
 
 
