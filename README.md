@@ -9,6 +9,46 @@ Three Machine Learning algorithm:
 3. Nueral Network by Keras
 
 
+## Data Summary
+
+- format: Tabular (xlsx)
+- Train : Val : Test = 11000 : 1000 : 1611
+
+
+| Name | Shape | Details |
+| --- | --- | --- |
+| Raw Shape | (13611,17) | 16 features + 1 class |
+| Input Shape | (13611,17) | 16 features + 1 bias |
+
+
+| Class | Number |
+| --- | --- |
+| Barbunya | 1322 |
+| Horoz | 1928 |
+| Bombay | 522 |
+| Seker | 2027 |
+| Cali | 1630 |
+| Sira | 2636 |
+| Dermosan | 3546 |
+
+
+## Results
+
+Loss by CrossEntropy.
+Data normalized.
+
+
+| Model | --- | Majority Guess | SoftMax | SVM | NN |
+| Test Acc | --- | 25.9466 % | 91.8684 % | 90.1303 % | 91.8684 % |
+
+
+### Train Loss and Validation Accuracy Plots
+![Train Loss and Validation Accuracy Plots](/plots/TrainValPlot.PNG)
+
+### Raw Data Tabular
+![Raw Data](/ScreenShots/RawData.PNG)
+
+
 ## Requirements
 Keras==2.4.3
 matplotlib==3.1.1
