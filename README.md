@@ -38,8 +38,12 @@ Loss by CrossEntropy.
 Data normalized.
 
 
-| **Model** | Majority Guess | SoftMax | SVM | NN |
-| **Test Acc** | 25.9466 % | 91.8684 % | 90.1303 % | 91.8684 % |
+| Model | Test Acc |
+| --- | --- |
+| Majority Guess | 25.9466 % | 
+| SoftMax | 91.8684 % |
+| SVM | 90.1303 % |
+| NN | 91.8684 % |
 
 
 ### Train Loss and Validation Accuracy Plots
